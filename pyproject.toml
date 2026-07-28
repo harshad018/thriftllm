@@ -1,0 +1,55 @@
+[project]
+name = "thriftllm"
+version = "0.1.0"
+description = "Production-grade middleware for drastically reducing Vertex AI (and other MaaS) inference costs through intelligent caching, compression, routing, and summarization. Optimized for conversational AI platforms like Orion."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Gilfoyle", email = "gilfoyle@thriftllm.dev"}]
+keywords = ["vertex-ai", "llm", "cost-optimization", "caching", "prompt-caching", "semantic-cache", "gemini"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "google-cloud-aiplatform>=1.60.0",
+    "redis>=5.0.0",
+    "numpy>=1.24.0",
+    "sentence-transformers>=2.2.0",  # For semantic embeddings; can fallback to Vertex Embedding API
+    "llmlingua>=0.2.0",  # For context compression
+    "langfuse>=2.0.0",  # Observability (optional)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "black>=24.0.0",
+    "ruff>=0.4.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/harshad018/thriftllm"
+Repository = "https://github.com/harshad018/thriftllm"
+Documentation = "https://github.com/harshad018/thriftllm/blob/main/README.md"
+"Bug Tracker" = "https://github.com/harshad018/thriftllm/issues"
+
+[tool.setuptools]
+packages = ["thriftllm"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
