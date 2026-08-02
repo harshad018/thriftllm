@@ -2,17 +2,16 @@
 
 **Project Vision**: Build a production-quality, open-source middleware library that significantly reduces inference costs for Vertex AI (Gemini, Claude on Vertex, etc.) and other Model-as-a-Service providers without sacrificing response quality or complicating integration into existing Flask-based conversational AI platforms like Orion. Target measurable cost reductions of 60-95% through a combination of intelligent caching, compression, routing, and optimization layers.
 
-**Current Phase**: M2/M3 - Core library skeleton & initial implementation, moving into benchmarking. **On track for 1-month target (v0.1 by ~Aug 28, 2026)**.
+**Current Phase**: M3 - Comprehensive benchmarks and core component testing. **On track for 1-month target (v0.1 by ~Aug 28, 2026)**.
 
 **Immediate Objectives**:
-- Complete optimization layers starting with fully functional CacheManager (DONE).
-- Add comprehensive tests, benchmark suite showing real savings on conversational workloads (In Progress - Benchmark script done).
+- Implement ConversationSummarizer and AdaptiveRouter.
 - Integrate with Orion's Redis session management for conversation summaries and per-session caching.
 - Publish first benchmarks vs baseline Vertex AI usage.
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
-- M2: Core library skeleton with **functional caching layer** (COMPLETED July 29)
+- M2: Core library skeleton with **functional caching layer** (**COMPLETED** July 29)
 - M3: Comprehensive benchmarks vs baseline Vertex AI usage (target: Aug 10-12)
 - M4: Production-ready v0.1.0 with docs, tests, examples for Orion integration (target: Aug 25)
 - M5: Community adoption, additional providers (Claude on Vertex), advanced features (post v1)
@@ -22,13 +21,13 @@
 - **July 28**: Read ROADMAP first per mandatory policy. Validated all docs. Created `pyproject.toml` (deps: Vertex SDK, Redis, sentence-transformers, LLMLingua, Langfuse). Implemented core skeleton (`ThriftVertex`, `WrappedGenerativeModel` proxy for drop-in compatibility, `MetricsCollector` with cost estimation). Chose proxy wrapper pattern. Updated ROADMAP.
 - **July 29**: **Completed CacheManager**. New `src/thriftllm/cache.py` with hybrid exact/semantic caching, session-aware keys, and quality-aware hits. Updated `core.py` to integrate the cache layer.
 - **July 31**: **Created Benchmark Script**. Implemented `benchmarks/conversational_benchmark.py` to quantify savings vs baseline. The script uses mocking to simulate Vertex AI calls and token usage, demonstrating the cost reduction achieved by the `CacheManager` on Orion-like multi-turn data.
-- **August 01 (this session)**: **Implemented Compressor Layer**. Created `src/thriftllm/compressor.py` with `PromptCompressor` (LLMLingua integration with fallback) and `QualityGuard` to ensure semantic integrity post-compression.
+- **August 01**: **Implemented Compressor Layer**. Created `src/thriftllm/compressor.py` with `PromptCompressor` (LLMLingua integration with fallback) and `QualityGuard` to ensure semantic integrity post-compression.
+- **August 02 (this session)**: **Added Comprehensive Unit Tests**. Created `tests/test_cache.py` and `tests/test_compressor.py` using `pytest` and `unittest.mock`. Verified cache hit/miss logic (exact and semantic), compressor fallback mechanisms, and quality guard heuristics.
 
 **Tasks In Progress**:
-- Adding unit/integration tests (pytest) for cache hit rates, quality preservation, and compressor logic.
+- Full real implementations for ConversationSummarizer (Redis-backed rolling summaries) and AdaptiveRouter (heuristic then learned).
 
 **Pending Tasks**:
-- Full real implementations for ConversationSummarizer (Redis-backed rolling summaries), AdaptiveRouter (heuristic then learned).
 - Deep Vertex Context Caching (per-session cache creation/update, implicit/explicit hybrid).
 - Flask middleware, Orion adapter (Supabase/Redis session sync).
 - CI/CD, BENCHMARKS.md with reproducible numbers, example notebooks.
@@ -45,7 +44,7 @@
 - Auto A/B testing of configs.
 - Support for batch + multimodal optimization.
 
-**Technical Debt**: None. Code is readable, observable (print + metrics), extensible, with clear TODOs. Stubs explicit. Documentation synchronized.
+**Technical Debt**: None. Code is readable, observable (print + metrics), extensible, with clear TODOs. Stubs explicit. Documentation synchronized. Tests added for core components.
 
 **Open Questions**:
 - Cache invalidation strategy for bad responses (user thumbs-down -> delete key).
@@ -54,4 +53,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 01, 2026 by Gilfoyle. Compressor layer implemented. M3 underway. Next session: comprehensive unit tests for cache and compressor. One-month target on track.*
+*Last Updated: August 02, 2026 by Gilfoyle. Unit tests added for cache and compressor. Next session: Implement ConversationSummarizer and AdaptiveRouter. One-month target on track.*
