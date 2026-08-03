@@ -5,7 +5,7 @@
 **Current Phase**: M3 - Comprehensive benchmarks and core component testing. **On track for 1-month target (v0.1 by ~Aug 28, 2026)**.
 
 **Immediate Objectives**:
-- Implement ConversationSummarizer and AdaptiveRouter.
+- Deep Vertex Context Caching (per-session cache creation/update, implicit/explicit hybrid).
 - Integrate with Orion's Redis session management for conversation summaries and per-session caching.
 - Publish first benchmarks vs baseline Vertex AI usage.
 
@@ -22,13 +22,13 @@
 - **July 29**: **Completed CacheManager**. New `src/thriftllm/cache.py` with hybrid exact/semantic caching, session-aware keys, and quality-aware hits. Updated `core.py` to integrate the cache layer.
 - **July 31**: **Created Benchmark Script**. Implemented `benchmarks/conversational_benchmark.py` to quantify savings vs baseline. The script uses mocking to simulate Vertex AI calls and token usage, demonstrating the cost reduction achieved by the `CacheManager` on Orion-like multi-turn data.
 - **August 01**: **Implemented Compressor Layer**. Created `src/thriftllm/compressor.py` with `PromptCompressor` (LLMLingua integration with fallback) and `QualityGuard` to ensure semantic integrity post-compression.
-- **August 02 (this session)**: **Added Comprehensive Unit Tests**. Created `tests/test_cache.py` and `tests/test_compressor.py` using `pytest` and `unittest.mock`. Verified cache hit/miss logic (exact and semantic), compressor fallback mechanisms, and quality guard heuristics.
+- **August 02**: **Added Comprehensive Unit Tests**. Created `tests/test_cache.py` and `tests/test_compressor.py` using `pytest` and `unittest.mock`. Verified cache hit/miss logic (exact and semantic), compressor fallback mechanisms, and quality guard heuristics.
+- **August 03 (this session)**: **Implemented ConversationSummarizer and AdaptiveRouter**. Created `src/thriftllm/summarizer.py` for Redis-backed rolling summaries to prevent token bloat. Created `src/thriftllm/router.py` for heuristic-based model downgrading on simple queries. Integrated both into the core pipeline in `src/thriftllm/core.py`.
 
 **Tasks In Progress**:
-- Full real implementations for ConversationSummarizer (Redis-backed rolling summaries) and AdaptiveRouter (heuristic then learned).
+- Deep Vertex Context Caching (per-session cache creation/update, implicit/explicit hybrid).
 
 **Pending Tasks**:
-- Deep Vertex Context Caching (per-session cache creation/update, implicit/explicit hybrid).
 - Flask middleware, Orion adapter (Supabase/Redis session sync).
 - CI/CD, BENCHMARKS.md with reproducible numbers, example notebooks.
 - v0.1.0 release with docs.
@@ -53,4 +53,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 02, 2026 by Gilfoyle. Unit tests added for cache and compressor. Next session: Implement ConversationSummarizer and AdaptiveRouter. One-month target on track.*
+*Last Updated: August 03, 2026 by Gilfoyle. Implemented ConversationSummarizer and AdaptiveRouter. Next session: Deep Vertex Context Caching. One-month target on track.*
