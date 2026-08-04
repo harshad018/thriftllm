@@ -3,8 +3,7 @@
 Provides the main ThriftVertex class that acts as a smart wrapper around
 Vertex AI GenerativeModel. Applies optimizations in a layered fashion.
 
-Updated (this session): Integrated ConversationSummarizer and AdaptiveRouter.
-Pipeline in WrappedGenerativeModel now checks cache, summarizes history, routes, and generates.
+Updated (this session): Integrated VertexContextCacheManager for deep context caching.
 """
 
 import time
@@ -18,12 +17,14 @@ from .metrics import MetricsCollector
 from .cache import CacheManager
 from .summarizer import ConversationSummarizer
 from .router import AdaptiveRouter
+from .vertex_caching import VertexContextCacheManager
 
 
 @dataclass
 class OptimizationConfig:
     """Configuration for all optimization layers."""
     enable_caching: bool = True
+    enable_vertex_caching: bool = True  # New flag for deep context caching
     enable_compression: bool = True
     enable_routing: bool = True
     enable_summarization: bool = True
@@ -47,6 +48,7 @@ class ThriftVertex:
 
         # Layer instances
         self.cache_manager = None
+        self.vertex_cache_manager = None
         self.compressor = None
         self.summarizer = None
         self.router = None
@@ -54,12 +56,15 @@ class ThriftVertex:
 
         self._init_layers()
         print(f"ThriftLLM initialized with config: caching={self.config.enable_caching}, "
+              f"vertex_caching={self.config.enable_vertex_caching}, "
               f"summarization={self.config.enable_summarization}, routing={self.config.enable_routing}")
 
     def _init_layers(self):
         """Initialize real optimization components where available."""
         if self.config.enable_caching:
             self.cache_manager = CacheManager(self.config, self.metrics)
+        if self.config.enable_vertex_caching:
+            self.vertex_cache_manager = VertexContextCacheManager(self.config)
         if self.config.enable_summarization:
             # In a real deployment, pass a configured Redis client here
             self.summarizer = ConversationSummarizer()
@@ -100,8 +105,10 @@ class WrappedGenerativeModel:
         """Optimized generate_content with full pipeline."""
         start_time = time.time()
         session_id = kwargs.pop("session_id", None)
+        system_instruction = kwargs.pop("system_instruction", None)
 
         cache_manager = self.thrift.cache_manager
+        vertex_cache_manager = self.thrift.vertex_cache_manager
         summarizer = self.thrift.summarizer
         router = self.thrift.router
         
@@ -113,7 +120,7 @@ class WrappedGenerativeModel:
         current_model_name = self.model_name
         active_model = self.base_model
 
-        # Layer 1: Cache check
+        # Layer 1: Semantic/Exact Cache check
         if cache_manager and self.thrift.config.enable_caching:
             cache_result = cache_manager.get_cached_response(contents, current_model_name, session_id)
             if cache_result:
@@ -138,7 +145,6 @@ class WrappedGenerativeModel:
 
         # Layer 2: Summarization (if session_id and history provided)
         if summarizer and self.thrift.config.enable_summarization and session_id and isinstance(contents, list):
-            # Assuming contents is a list of dicts for history
             try:
                 contents = summarizer.process_history(session_id, contents)
             except Exception as e:
@@ -155,7 +161,26 @@ class WrappedGenerativeModel:
                 current_model_name = routed_model_name
                 active_model = GenerativeModel(current_model_name)
 
-        # Layer 4: Generation
+        # Layer 4: Deep Vertex Context Caching
+        cached_content_name = None
+        if vertex_cache_manager and self.thrift.config.enable_vertex_caching and session_id:
+            # Attempt to use or create a Vertex Context Cache for this session
+            cached_content_name = vertex_cache_manager.get_or_create_cache(
+                session_id=session_id,
+                model_name=current_model_name,
+                system_instruction=system_instruction,
+                contents=contents[:-1] if isinstance(contents, list) and len(contents) > 1 else None # Cache history, not the latest prompt
+            )
+            
+            if cached_content_name:
+                # Re-initialize the model to use the cached content
+                print(f"[ThriftLLM] Utilizing Vertex Cached Content: {cached_content_name}")
+                active_model = GenerativeModel(current_model_name, cached_content=cached_content_name)
+                # If we cached the history, we only need to send the latest prompt
+                if isinstance(contents, list) and len(contents) > 1:
+                    contents = [contents[-1]]
+
+        # Layer 5: Generation
         try:
             response = active_model.generate_content(
                 contents, generation_config=generation_config, **kwargs
@@ -165,7 +190,7 @@ class WrappedGenerativeModel:
             input_tokens = getattr(getattr(response, 'usage_metadata', None), 'prompt_token_count', 100)
             output_tokens = getattr(getattr(response, 'usage_metadata', None), 'candidates_token_count', 50)
 
-            # Layer 5: Store in cache
+            # Layer 6: Store in Semantic Cache
             if cache_manager and not cache_hit:
                 emb = None
                 if hasattr(cache_manager, '_get_embedding'):
