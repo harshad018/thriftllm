@@ -12,14 +12,15 @@ See README.md, ARCHITECTURE.md, and ROADMAP.md for details.
 
 from .core import ThriftVertex, OptimizationConfig
 from .metrics import MetricsCollector
+from .adapter import OrionAdapter, thrift_route
 
 __version__ = "0.1.0"
-__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector"]
+__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route"]
 
 # TODO: Implement individual optimization layers in subsequent modules
-# - cache/: Hybrid semantic + Vertex Context Cache + Redis
-# - compression/: LLMLingua + custom for RAG/tools
-# - routing/: Adaptive model selection (Flash vs Pro)
-# - summarization/: Rolling conversation state management
+# - cache/: Hybrid semantic + Vertex Context Cache + Redis (Implemented)
+# - compression/: LLMLingua + custom for RAG/tools (Implemented)
+# - routing/: Adaptive model selection (Flash vs Pro) (Implemented)
+# - summarization/: Rolling conversation state management (Implemented)
 # - quality/: LLM-as-judge and embedding similarity guards
-# - integration/: Flask middleware, session awareness with Redis/Supabase
+# - integration/: Flask middleware, session awareness with Redis/Supabase (Implemented)
