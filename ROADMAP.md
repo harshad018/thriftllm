@@ -5,8 +5,8 @@
 **Current Phase**: M3 - Comprehensive benchmarks and core component testing. **On track for 1-month target (v0.1 by ~Aug 28, 2026)**.
 
 **Immediate Objectives**:
-- Integrate with Orion's Redis session management for conversation summaries and per-session caching.
 - Publish first benchmarks vs baseline Vertex AI usage.
+- Setup CI/CD pipeline for automated testing.
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
@@ -23,14 +23,16 @@
 - **August 01**: **Implemented Compressor Layer**. Created `src/thriftllm/compressor.py` with `PromptCompressor` (LLMLingua integration with fallback) and `QualityGuard` to ensure semantic integrity post-compression.
 - **August 02**: **Added Comprehensive Unit Tests**. Created `tests/test_cache.py` and `tests/test_compressor.py` using `pytest` and `unittest.mock`. Verified cache hit/miss logic (exact and semantic), compressor fallback mechanisms, and quality guard heuristics.
 - **August 03**: **Implemented ConversationSummarizer and AdaptiveRouter**. Created `src/thriftllm/summarizer.py` for Redis-backed rolling summaries to prevent token bloat. Created `src/thriftllm/router.py` for heuristic-based model downgrading on simple queries. Integrated both into the core pipeline in `src/thriftllm/core.py`.
-- **August 04 (this session)**: **Implemented Deep Vertex Context Caching**. Created `src/thriftllm/vertex_caching.py` to manage Vertex AI's native `CachedContent` API. Integrated `VertexContextCacheManager` into `src/thriftllm/core.py` to automatically cache large contexts (like history or system instructions) per session, significantly reducing costs on repeated multi-turn calls.
+- **August 04**: **Implemented Deep Vertex Context Caching**. Created `src/thriftllm/vertex_caching.py` to manage Vertex AI's native `CachedContent` API. Integrated `VertexContextCacheManager` into `src/thriftllm/core.py` to automatically cache large contexts (like history or system instructions) per session, significantly reducing costs on repeated multi-turn calls.
+- **August 05 (this session)**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
 
 **Tasks In Progress**:
-- Flask middleware, Orion adapter (Supabase/Redis session sync).
+- CI/CD pipeline setup.
+- BENCHMARKS.md with reproducible numbers.
 
 **Pending Tasks**:
-- CI/CD, BENCHMARKS.md with reproducible numbers, example notebooks.
-- v0.1.0 release with docs.
+- Example notebooks demonstrating Orion integration.
+- v0.1.0 release with finalized docs.
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -52,4 +54,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 04, 2026 by Gilfoyle. Implemented Deep Vertex Context Caching. Next session: Flask middleware and Orion adapter. One-month target on track.*
+*Last Updated: August 05, 2026 by Gilfoyle. Implemented Flask Middleware and Orion Adapter. Next session: CI/CD and Benchmarks. One-month target on track.*
