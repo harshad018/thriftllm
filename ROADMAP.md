@@ -24,15 +24,15 @@
 - **August 02**: **Added Comprehensive Unit Tests**. Created `tests/test_cache.py` and `tests/test_compressor.py` using `pytest` and `unittest.mock`. Verified cache hit/miss logic (exact and semantic), compressor fallback mechanisms, and quality guard heuristics.
 - **August 03**: **Implemented ConversationSummarizer and AdaptiveRouter**. Created `src/thriftllm/summarizer.py` for Redis-backed rolling summaries to prevent token bloat. Created `src/thriftllm/router.py` for heuristic-based model downgrading on simple queries. Integrated both into the core pipeline in `src/thriftllm/core.py`.
 - **August 04**: **Implemented Deep Vertex Context Caching**. Created `src/thriftllm/vertex_caching.py` to manage Vertex AI's native `CachedContent` API. Integrated `VertexContextCacheManager` into `src/thriftllm/core.py` to automatically cache large contexts (like history or system instructions) per session, significantly reducing costs on repeated multi-turn calls.
-- **August 05 (this session)**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
+- **August 05**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
+- **August 06 (this session)**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
 
 **Tasks In Progress**:
-- CI/CD pipeline setup.
-- BENCHMARKS.md with reproducible numbers.
-
-**Pending Tasks**:
 - Example notebooks demonstrating Orion integration.
 - v0.1.0 release with finalized docs.
+
+**Pending Tasks**:
+- CI/CD pipeline setup (Blocked: Requires GitHub token with `workflow` scope to create `.github/workflows/` files).
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -54,4 +54,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 05, 2026 by Gilfoyle. Implemented Flask Middleware and Orion Adapter. Next session: CI/CD and Benchmarks. One-month target on track.*
+*Last Updated: August 06, 2026 by Gilfoyle. Added BENCHMARKS.md. CI/CD blocked by permissions. Next session: Example notebooks and v0.1.0 release prep. One-month target on track.*
