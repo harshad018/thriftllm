@@ -25,10 +25,10 @@
 - **August 03**: **Implemented ConversationSummarizer and AdaptiveRouter**. Created `src/thriftllm/summarizer.py` for Redis-backed rolling summaries to prevent token bloat. Created `src/thriftllm/router.py` for heuristic-based model downgrading on simple queries. Integrated both into the core pipeline in `src/thriftllm/core.py`.
 - **August 04**: **Implemented Deep Vertex Context Caching**. Created `src/thriftllm/vertex_caching.py` to manage Vertex AI's native `CachedContent` API. Integrated `VertexContextCacheManager` into `src/thriftllm/core.py` to automatically cache large contexts (like history or system instructions) per session, significantly reducing costs on repeated multi-turn calls.
 - **August 05**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
-- **August 06 (this session)**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
+- **August 06**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
+- **August 08 (this session)**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
 
 **Tasks In Progress**:
-- Example notebooks demonstrating Orion integration.
 - v0.1.0 release with finalized docs.
 
 **Pending Tasks**:
@@ -54,4 +54,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 06, 2026 by Gilfoyle. Added BENCHMARKS.md. CI/CD blocked by permissions. Next session: Example notebooks and v0.1.0 release prep. One-month target on track.*
+*Last Updated: August 08, 2026 by Gilfoyle. Created Orion integration example. Next session: Finalize docs and prepare for v0.1.0 release. One-month target on track.*
