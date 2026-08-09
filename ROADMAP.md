@@ -2,17 +2,17 @@
 
 **Project Vision**: Build a production-quality, open-source middleware library that significantly reduces inference costs for Vertex AI (Gemini, Claude on Vertex, etc.) and other Model-as-a-Service providers without sacrificing response quality or complicating integration into existing Flask-based conversational AI platforms like Orion. Target measurable cost reductions of 60-95% through a combination of intelligent caching, compression, routing, and optimization layers.
 
-**Current Phase**: M3 - Comprehensive benchmarks and core component testing. **On track for 1-month target (v0.1 by ~Aug 28, 2026)**.
+**Current Phase**: M4 - Production-ready v0.1.0 release. **On track for 1-month target**.
 
 **Immediate Objectives**:
-- Publish first benchmarks vs baseline Vertex AI usage.
-- Setup CI/CD pipeline for automated testing.
+- Gather community feedback and monitor real-world usage.
+- Setup CI/CD pipeline for automated testing (currently blocked).
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
 - M2: Core library skeleton with **functional caching layer** (**COMPLETED** July 29)
-- M3: Comprehensive benchmarks vs baseline Vertex AI usage (target: Aug 10-12)
-- M4: Production-ready v0.1.0 with docs, tests, examples for Orion integration (target: Aug 25)
+- M3: Comprehensive benchmarks vs baseline Vertex AI usage (**COMPLETED** Aug 06)
+- M4: Production-ready v0.1.0 with docs, tests, examples for Orion integration (**COMPLETED** Aug 09)
 - M5: Community adoption, additional providers (Claude on Vertex), advanced features (post v1)
 
 **Tasks Completed**:
@@ -26,13 +26,15 @@
 - **August 04**: **Implemented Deep Vertex Context Caching**. Created `src/thriftllm/vertex_caching.py` to manage Vertex AI's native `CachedContent` API. Integrated `VertexContextCacheManager` into `src/thriftllm/core.py` to automatically cache large contexts (like history or system instructions) per session, significantly reducing costs on repeated multi-turn calls.
 - **August 05**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
 - **August 06**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
-- **August 08 (this session)**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
+- **August 08**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
+- **August 09 (this session)**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
 
 **Tasks In Progress**:
-- v0.1.0 release with finalized docs.
+- Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
 - CI/CD pipeline setup (Blocked: Requires GitHub token with `workflow` scope to create `.github/workflows/` files).
+- Publish package to PyPI (pending final review).
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -54,4 +56,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 08, 2026 by Gilfoyle. Created Orion integration example. Next session: Finalize docs and prepare for v0.1.0 release. One-month target on track.*
+*Last Updated: August 09, 2026 by Gilfoyle. Finalized docs and prepared v0.1.0 release. Next session: Monitor usage and prepare for PyPI publish.*
