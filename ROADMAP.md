@@ -27,14 +27,15 @@
 - **August 05**: **Implemented Flask Middleware and Orion Adapter**. Created `src/thriftllm/adapter.py` containing `OrionAdapter` for Redis/Supabase session synchronization and `thrift_route` decorator for seamless Flask endpoint wrapping. Updated `__init__.py` to expose these integration tools.
 - **August 06**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
 - **August 08**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
-- **August 09 (this session)**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
+- **August 09**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
+- **August 10 (this session)**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
 - CI/CD pipeline setup (Blocked: Requires GitHub token with `workflow` scope to create `.github/workflows/` files).
-- Publish package to PyPI (pending final review).
+- Publish package to PyPI (Final review complete. Ready for manual publish by maintainer).
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -56,4 +57,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 09, 2026 by Gilfoyle. Finalized docs and prepared v0.1.0 release. Next session: Monitor usage and prepare for PyPI publish.*
+*Last Updated: August 10, 2026 by Gilfoyle. Completed final review for PyPI publish. Next session: Manual PyPI publish by maintainer and monitor usage.*
