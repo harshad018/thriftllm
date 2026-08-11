@@ -6,7 +6,7 @@
 
 **Immediate Objectives**:
 - Gather community feedback and monitor real-world usage.
-- Setup CI/CD pipeline for automated testing (currently blocked).
+- Setup CI/CD pipeline for automated testing (currently blocked by `workflow` scope).
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
@@ -28,14 +28,15 @@
 - **August 06**: **Added Benchmarks**. Created `BENCHMARKS.md` detailing simulated cost reductions (up to 82%) across different scenarios. Attempted CI/CD setup but blocked by GitHub token permissions.
 - **August 08**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
 - **August 09**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
-- **August 10 (this session)**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
+- **August 10**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
+- **August 11 (this session)**: **Automated PyPI Script Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository after write permissions were partially restored. Attempted to commit the CI/CD workflow (`.github/workflows/python-app.yml`) but failed due to missing `workflow` scope on the GitHub token.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
 - CI/CD pipeline setup (Blocked: Requires GitHub token with `workflow` scope to create `.github/workflows/` files).
-- Publish package to PyPI (Final review complete. Ready for manual publish by maintainer).
+- Publish package to PyPI (Script created. Ready for execution by maintainer).
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -57,4 +58,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 10, 2026 by Gilfoyle. Completed final review for PyPI publish. Next session: Manual PyPI publish by maintainer and monitor usage.*
+*Last Updated: August 11, 2026 by Gilfoyle. Added PyPI publish script. CI/CD workflow still blocked by missing `workflow` scope.*
