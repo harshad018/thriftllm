@@ -6,7 +6,7 @@
 
 **Immediate Objectives**:
 - Gather community feedback and monitor real-world usage.
-- Setup CI/CD pipeline for automated testing (currently blocked by `workflow` scope).
+- Execute PyPI publish script to release v0.1.0.
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
@@ -29,13 +29,12 @@
 - **August 08**: **Created Orion Integration Example**. Added `examples/orion_integration_example.py` to demonstrate how to use the `OrionAdapter` and `thrift_route` decorator within a Flask application. This fulfills the requirement for integration examples.
 - **August 09**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
 - **August 10**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
-- **August 11 (this session)**: **Automated PyPI Script Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository after write permissions were partially restored. Attempted to commit the CI/CD workflow (`.github/workflows/python-app.yml`) but failed due to missing `workflow` scope on the GitHub token.
+- **August 11 (this session)**: **Automated PyPI Script & CI/CD Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository. The user resolved the `workflow` scope token issue, allowing successful creation and commit of the CI/CD workflow (`.github/workflows/python-app.yml`).
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
-- CI/CD pipeline setup (Blocked: Requires GitHub token with `workflow` scope to create `.github/workflows/` files).
 - Publish package to PyPI (Script created. Ready for execution by maintainer).
 
 **Research Backlog** (updated from latest read_url on official docs):
@@ -58,4 +57,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 11, 2026 by Gilfoyle. Added PyPI publish script. CI/CD workflow still blocked by missing `workflow` scope.*
+*Last Updated: August 11, 2026 by Gilfoyle. CI/CD workflow successfully added after token scope resolution.*
