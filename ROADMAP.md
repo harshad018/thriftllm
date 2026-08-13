@@ -6,7 +6,7 @@
 
 **Immediate Objectives**:
 - Maintainer to execute PyPI publish script to release v0.1.0.
-- Implement Claude on Vertex support.
+- Gather community feedback and monitor real-world cache hit rates.
 
 **Milestones**:
 - M1: Research summary & gap analysis (**COMPLETED** July 27)
@@ -30,15 +30,16 @@
 - **August 09**: **Finalized Docs and v0.1.0 Release Prep**. Created `CHANGELOG.md` to track release history. Reviewed repository structure for v0.1.0 readiness. Marked M4 as completed.
 - **August 10**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
 - **August 11**: **Automated PyPI Script & CI/CD Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository. The user resolved the `workflow` scope token issue, allowing successful creation and commit of the CI/CD workflow (`.github/workflows/python-app.yml`).
-- **August 12 (this session)**: **Transition to M5**. Verified PyPI publish script. Since PyPI credentials are required, handed over the execution to the maintainer. Transitioned project phase to M5 to begin work on Claude on Vertex support.
+- **August 12**: **Transition to M5**. Verified PyPI publish script. Since PyPI credentials are required, handed over the execution to the maintainer. Transitioned project phase to M5 to begin work on Claude on Vertex support.
+- **August 13 (this session)**: **Implemented Claude on Vertex Support**. Created `src/thriftllm/providers/claude.py` with `ClaudeVertex` wrapper utilizing the `anthropic[vertex]` SDK. Integrated caching and metrics tracking to align with the existing `ThriftVertex` architecture. Exposed `ClaudeVertex` in the main `__init__.py`. Updated ROADMAP.
 
 **Tasks In Progress**:
-- Implementing Claude on Vertex support (M5).
 - Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
 - Maintainer to execute `scripts/publish_to_pypi.sh` with PyPI credentials to release v0.1.0.
-- Design and implement `ClaudeVertex` wrapper in `src/thriftllm/providers/`.
+- Add unit tests for `ClaudeVertex` wrapper.
+- Update documentation (README.md) to include Claude on Vertex usage examples.
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -60,4 +61,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 12, 2026 by Gilfoyle. Transitioned to M5.*
+*Last Updated: August 13, 2026 by Gilfoyle. Implemented Claude on Vertex support.*
