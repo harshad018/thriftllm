@@ -8,7 +8,7 @@ with quality preservation. All numbers in RESEARCH.md and BENCHMARKS.md will com
 """
 import time
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Dict
 import json
 
 
