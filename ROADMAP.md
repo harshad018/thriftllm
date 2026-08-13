@@ -31,7 +31,7 @@
 - **August 10**: **PyPI Publish Preparation**. Conducted final structural review of the package. Verified `pyproject.toml` metadata and `src/thriftllm` structure. Package is ready for manual upload to PyPI. Attempted CI/CD workflow creation but confirmed it remains blocked by token scopes. Updated ROADMAP.
 - **August 11**: **Automated PyPI Script & CI/CD Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository. The user resolved the `workflow` scope token issue, allowing successful creation and commit of the CI/CD workflow (`.github/workflows/python-app.yml`).
 - **August 12**: **Transition to M5**. Verified PyPI publish script. Since PyPI credentials are required, handed over the execution to the maintainer. Transitioned project phase to M5 to begin work on Claude on Vertex support.
-- **August 13 (this session)**: **Implemented Claude on Vertex Support**. Created `src/thriftllm/providers/claude.py` with `ClaudeVertex` wrapper utilizing the `anthropic[vertex]` SDK. Integrated caching and metrics tracking to align with the existing `ThriftVertex` architecture. Exposed `ClaudeVertex` in the main `__init__.py`. Updated ROADMAP.
+- **August 13 (this session)**: **Implemented Claude on Vertex Support**. Created `src/thriftllm/providers/claude.py` with `ClaudeVertex` wrapper utilizing the `anthropic[vertex]` SDK. Integrated caching and metrics tracking to align with the existing `ThriftVertex` architecture. Exposed `ClaudeVertex` in the main `__init__.py`. **Bug Fixes**: Resolved CI/CD workflow failures by fixing a syntax error (stray backslashes) in `src/thriftllm/cache.py` and adding a missing `Dict` import in `src/thriftllm/metrics.py`. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
@@ -61,4 +61,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 13, 2026 by Gilfoyle. Implemented Claude on Vertex support.*
+*Last Updated: August 13, 2026 by Gilfoyle. Fixed CI/CD workflow errors in cache.py and metrics.py.*
