@@ -55,26 +55,35 @@ See `RESEARCH.md` (forthcoming) and `ROADMAP.md` for details.
 - Being a general LLM proxy (LiteLLM already exists; we focus on deep cost optimizations for conversational use).
 - Supporting every possible model/provider from day one (start with Vertex Gemini/Claude, expand later).
 
-## Quick Start (Planned for v0.1)
+## Quick Start
 
 ```python
 from thriftllm import ThriftVertex
-from vertexai.generative_models import GenerativeModel
+from thriftllm.providers.claude import ClaudeVertex
 
-# Wrap your existing client
+# 1. Using Gemini on Vertex AI
 client = ThriftVertex(
     project_id="your-project",
     location="us-central1",
-    cache_config={"redis_url": "redis://localhost:6379"},
-    router_config={"quality_threshold": 0.85},
+    config={"enable_caching": True, "redis_url": "redis://localhost:6379"}
 )
 
-model = client.wrap(GenerativeModel("gemini-2.5-flash"))  # or use as drop-in
+model = client.get_model("gemini-2.5-flash")
+response = model.generate_content("Your prompt here...", session_id="user-123")
 
-response = model.generate_content("Your prompt here...")
+# 2. Using Claude on Vertex AI
+claude_client = ClaudeVertex(
+    project_id="your-project",
+    region="us-central1",
+    thrift_app=client  # Share the same cache and metrics configuration
+)
+
+claude_model = claude_client.get_model("claude-3-sonnet@20240229", max_tokens=1024)
+messages = [{"role": "user", "content": "Explain quantum computing."}]
+claude_response = claude_model.create_message(messages, session_id="user-123")
 ```
 
-See `examples/orion_integration.py` after implementation.
+See `examples/orion_integration_example.py` for advanced Flask integration.
 
 ## Architecture (High-level, to be detailed in ARCHITECTURE.md)
 
@@ -116,6 +125,6 @@ This project follows the engineering standards of its maintainer (inspired by *S
 
 ---
 
-**Status**: Foundational phase complete. Implementation begins next (after full research sync and design finalization).
+**Status**: M5 - Community adoption and additional providers.
 
-Last updated: July 27, 2026
+Last updated: August 14, 2026
