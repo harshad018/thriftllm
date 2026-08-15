@@ -166,6 +166,22 @@ class CacheManager:
         except RedisError as e:
             print(f"[ThriftLLM Cache] Store failed: {e}")
 
+    def invalidate(self, contents: Any, model_name: str, session_id: Optional[str] = None) -> bool:
+        """Invalidate a specific cache entry. Useful for bad responses (e.g., user thumbs-down)."""
+        if not self.redis_client or not self.config.enable_caching:
+            return False
+            
+        key = self._get_cache_key(contents, model_name, session_id)
+        try:
+            deleted = self.redis_client.delete(key)
+            if deleted:
+                print(f"[ThriftLLM Cache] INVALIDATED key: {key}")
+                return True
+            return False
+        except RedisError as e:
+            print(f"[ThriftLLM Cache] Invalidate failed: {e}")
+            return False
+
     def create_vertex_context_cache(self, contents: list, model_name: str, ttl_seconds: int = 3600) -> Optional[str]:
         """Create explicit Vertex AI Context Cache for large repeated contexts (75-90% savings).
         
