@@ -32,7 +32,8 @@
 - **August 11**: **Automated PyPI Script & CI/CD Creation**. Successfully committed `scripts/publish_to_pypi.sh` to the repository. The user resolved the `workflow` scope token issue, allowing successful creation and commit of the CI/CD workflow (`.github/workflows/python-app.yml`).
 - **August 12**: **Transition to M5**. Verified PyPI publish script. Since PyPI credentials are required, handed over the execution to the maintainer. Transitioned project phase to M5 to begin work on Claude on Vertex support.
 - **August 13**: **Implemented Claude on Vertex Support**. Created `src/thriftllm/providers/claude.py` with `ClaudeVertex` wrapper utilizing the `anthropic[vertex]` SDK. Integrated caching and metrics tracking to align with the existing `ThriftVertex` architecture. Exposed `ClaudeVertex` in the main `__init__.py`. **Bug Fixes**: Resolved CI/CD workflow failures by fixing a syntax error (stray backslashes) in `src/thriftllm/cache.py` and adding a missing `Dict` import in `src/thriftllm/metrics.py`. Updated ROADMAP.
-- **August 14 (this session)**: **Added Claude Tests and Documentation**. Created `tests/test_claude.py` with comprehensive unit tests for the `ClaudeVertex` wrapper, verifying cache hits, misses, and metrics recording. Updated `README.md` to include clear usage examples for both Gemini and Claude on Vertex AI.
+- **August 14**: **Added Claude Tests and Documentation**. Created `tests/test_claude.py` with comprehensive unit tests for the `ClaudeVertex` wrapper, verifying cache hits, misses, and metrics recording. Updated `README.md` to include clear usage examples for both Gemini and Claude on Vertex AI.
+- **August 15 (this session)**: **Implemented Cache Invalidation Strategy**. Addressed an open question by adding an `invalidate` method to `CacheManager` in `src/thriftllm/cache.py`. Exposed `invalidate_cache` in both `ThriftVertex` (`src/thriftllm/core.py`) and `ClaudeVertex` (`src/thriftllm/providers/claude.py`). This allows developers to programmatically delete cached responses (e.g., when a user gives a thumbs-down to a bad response). Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
@@ -54,10 +55,9 @@
 **Technical Debt**: None. Code is readable, observable (print + metrics), extensible, with clear TODOs. Stubs explicit. Documentation synchronized. Tests added for core components.
 
 **Open Questions**:
-- Cache invalidation strategy for bad responses (user thumbs-down -> delete key).
 - Exact pricing estimator update with 2026 tables.
 - Best way to serialize full GenerationResponse for cache (current uses text + metadata).
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 14, 2026 by Gilfoyle. Added Claude tests and updated README.*
+*Last Updated: August 15, 2026 by Gilfoyle. Implemented cache invalidation strategy.*
