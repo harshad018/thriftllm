@@ -82,6 +82,12 @@ class ThriftVertex:
         """Wrap an existing GenerativeModel instance."""
         return WrappedGenerativeModel(model, self)
 
+    def invalidate_cache(self, contents: Any, model_name: str, session_id: Optional[str] = None) -> bool:
+        """Invalidate a specific cache entry. Useful for bad responses (e.g., user thumbs-down)."""
+        if self.cache_manager:
+            return self.cache_manager.invalidate(contents, model_name, session_id)
+        return False
+
 
 class WrappedGenerativeModel:
     """Proxy that intercepts generate_content, send_message, etc."""
