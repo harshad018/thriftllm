@@ -22,6 +22,21 @@ class ClaudeVertex:
     def get_model(self, model_name: str, **kwargs):
         return WrappedClaudeModel(self.client, model_name, self.thrift, **kwargs)
 
+    def invalidate_cache(self, messages: List[Dict[str, Any]], model_name: str, session_id: Optional[str] = None) -> bool:
+        """Invalidate a specific cache entry for Claude."""
+        if self.thrift and self.thrift.cache_manager:
+            prompt_text = self._extract_text(messages)
+            return self.thrift.cache_manager.invalidate(prompt_text, model_name, session_id)
+        return False
+
+    def _extract_text(self, messages: List[Dict[str, Any]]) -> str:
+        if not messages:
+            return ""
+        last_msg = messages[-1]
+        if isinstance(last_msg, dict) and "content" in last_msg:
+            return str(last_msg["content"])
+        return str(last_msg)
+
 class WrappedClaudeModel:
     def __init__(self, client, model_name: str, thrift, **kwargs):
         self.client = client
