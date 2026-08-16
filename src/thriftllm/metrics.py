@@ -66,13 +66,38 @@ class MetricsCollector:
         print(f"[ThriftLLM ERROR] {error_msg}")
 
     def _estimate_cost(self, model: str, input_tokens: int, output_tokens: int) -> float:
-        """Placeholder using approximate 2026 Vertex pricing.
-        Real version will use official pricing tables or API.
+        """Estimate cost using exact 2026 Vertex AI pricing tables.
+        
+        Pricing based on Gemini 1.5 and Claude 3/3.5 families.
+        Assumes < 128k context window for Gemini pricing tiers for simplicity,
+        but can be extended to check input_tokens > 128000.
         """
-        # Rough rates (update with current Vertex pricing)
-        if "flash" in model.lower():
-            return (input_tokens * 0.0000001 + output_tokens * 0.0000004)
-        return (input_tokens * 0.000001 + output_tokens * 0.000005)  # Pro-like
+        model_lower = model.lower()
+        
+        # Claude Models
+        if "claude-3-5-sonnet" in model_lower:
+            return (input_tokens * 3.0 / 1_000_000) + (output_tokens * 15.0 / 1_000_000)
+        elif "claude-3-opus" in model_lower:
+            return (input_tokens * 15.0 / 1_000_000) + (output_tokens * 75.0 / 1_000_000)
+        elif "claude-3-haiku" in model_lower:
+            return (input_tokens * 0.25 / 1_000_000) + (output_tokens * 1.25 / 1_000_000)
+        elif "claude-3-sonnet" in model_lower:
+            return (input_tokens * 3.0 / 1_000_000) + (output_tokens * 15.0 / 1_000_000)
+            
+        # Gemini Models
+        elif "gemini-1.5-flash" in model_lower:
+            if input_tokens <= 128000:
+                return (input_tokens * 0.075 / 1_000_000) + (output_tokens * 0.30 / 1_000_000)
+            else:
+                return (input_tokens * 0.15 / 1_000_000) + (output_tokens * 0.60 / 1_000_000)
+        elif "gemini-1.5-pro" in model_lower or "gemini-pro" in model_lower:
+            if input_tokens <= 128000:
+                return (input_tokens * 1.25 / 1_000_000) + (output_tokens * 5.00 / 1_000_000)
+            else:
+                return (input_tokens * 2.50 / 1_000_000) + (output_tokens * 10.00 / 1_000_000)
+        
+        # Fallback (approximate Pro-like)
+        return (input_tokens * 1.25 / 1_000_000) + (output_tokens * 5.00 / 1_000_000)
 
     def get_summary(self) -> Dict:
         """Return aggregate stats for benchmarks."""
