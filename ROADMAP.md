@@ -34,14 +34,15 @@
 - **August 13**: **Implemented Claude on Vertex Support**. Created `src/thriftllm/providers/claude.py` with `ClaudeVertex` wrapper utilizing the `anthropic[vertex]` SDK. Integrated caching and metrics tracking to align with the existing `ThriftVertex` architecture. Exposed `ClaudeVertex` in the main `__init__.py`. **Bug Fixes**: Resolved CI/CD workflow failures by fixing a syntax error (stray backslashes) in `src/thriftllm/cache.py` and adding a missing `Dict` import in `src/thriftllm/metrics.py`. Updated ROADMAP.
 - **August 14**: **Added Claude Tests and Documentation**. Created `tests/test_claude.py` with comprehensive unit tests for the `ClaudeVertex` wrapper, verifying cache hits, misses, and metrics recording. Updated `README.md` to include clear usage examples for both Gemini and Claude on Vertex AI.
 - **August 15**: **Implemented Cache Invalidation Strategy**. Addressed an open question by adding an `invalidate` method to `CacheManager` in `src/thriftllm/cache.py`. Exposed `invalidate_cache` in both `ThriftVertex` (`src/thriftllm/core.py`) and `ClaudeVertex` (`src/thriftllm/providers/claude.py`). This allows developers to programmatically delete cached responses (e.g., when a user gives a thumbs-down to a bad response). Updated ROADMAP.
-- **August 16 (this session)**: **Updated Pricing Estimator**. Resolved an open question by updating `src/thriftllm/metrics.py` to use exact 2026 pricing tables for Gemini 1.5 (Flash/Pro) and Claude 3/3.5 models, replacing the previous placeholder logic. Updated ROADMAP.
+- **August 16**: **Updated Pricing Estimator**. Resolved an open question by updating `src/thriftllm/metrics.py` to use exact 2026 pricing tables for Gemini 1.5 (Flash/Pro) and Claude 3/3.5 models, replacing the previous placeholder logic. Updated ROADMAP.
+- **August 17 (this session)**: **Implemented GenerationResponse Serialization**. Resolved an open question by updating `src/thriftllm/cache.py` to properly serialize the full `GenerationResponse` object (including candidates, parts, and usage metadata) and updating `src/thriftllm/core.py` to reconstruct a robust mock `GenerationResponse` upon cache hits. This ensures downstream applications receive a consistent object structure regardless of whether the response was generated or cached. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
 
 **Pending Tasks**:
 - Maintainer to execute `scripts/publish_to_pypi.sh` with PyPI credentials to release v0.1.0.
-- Implement proper serialization for full `GenerationResponse` in cache.
+- Implement automatic cache warming from Orion deep research RAG.
 
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
@@ -57,8 +58,8 @@
 **Technical Debt**: None. Code is readable, observable (print + metrics), extensible, with clear TODOs. Stubs explicit. Documentation synchronized. Tests added for core components.
 
 **Open Questions**:
-- Best way to serialize full GenerationResponse for cache (current uses text + metadata).
+- None at the moment.
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 16, 2026 by Gilfoyle. Updated pricing estimator with exact 2026 tables.*
+*Last Updated: August 17, 2026 by Gilfoyle. Implemented GenerationResponse serialization.*
