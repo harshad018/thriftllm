@@ -136,6 +136,48 @@ class CacheManager:
         
         return None
 
+    def _serialize_response(self, response: Any) -> Dict:
+        """Properly serialize a GenerationResponse or similar object."""
+        if hasattr(response, 'to_dict'):
+            try:
+                return response.to_dict()
+            except Exception:
+                pass
+        
+        # Fallback manual serialization for Vertex AI GenerationResponse
+        serialized = {}
+        if hasattr(response, 'text'):
+            serialized['text'] = response.text
+        
+        if hasattr(response, 'candidates'):
+            candidates = []
+            for cand in response.candidates:
+                cand_dict = {}
+                if hasattr(cand, 'content'):
+                    parts = []
+                    if hasattr(cand.content, 'parts'):
+                        for part in cand.content.parts:
+                            if hasattr(part, 'text'):
+                                parts.append({'text': part.text})
+                    cand_dict['content'] = {'parts': parts}
+                if hasattr(cand, 'finish_reason'):
+                    cand_dict['finish_reason'] = str(cand.finish_reason)
+                candidates.append(cand_dict)
+            serialized['candidates'] = candidates
+            
+        if hasattr(response, 'usage_metadata'):
+            usage = response.usage_metadata
+            serialized['usage_metadata'] = {
+                'prompt_token_count': getattr(usage, 'prompt_token_count', 0),
+                'candidates_token_count': getattr(usage, 'candidates_token_count', 0),
+                'total_token_count': getattr(usage, 'total_token_count', 0)
+            }
+            
+        if not serialized:
+            return {"raw_str": str(response)}
+            
+        return serialized
+
     def store_response(self, contents: Any, model_name: str, response: Any, session_id: Optional[str] = None, 
                       output_tokens: int = 0, embedding: Optional[list] = None):
         """Store in Redis (exact + add to semantic recent list)."""
@@ -145,9 +187,10 @@ class CacheManager:
         key = self._get_cache_key(contents, model_name, session_id)
         text = response.text if hasattr(response, 'text') else str(response)
         
+        serialized_resp = self._serialize_response(response)
         data = {
             "text": text,
-            "response": str(response),  # Simplified; in prod serialize properly or use pickle with care
+            "response": serialized_resp,
             "output_tokens": output_tokens,
             "timestamp": time.time(),
             "model": model_name
