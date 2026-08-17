@@ -133,14 +133,41 @@ class WrappedGenerativeModel:
                 cache_hit = True
                 estimated_savings = 0.25
                 quality_score = cache_result.get("similarity", 1.0)
+                
                 class CachedResponse:
-                    def __init__(self, text: str):
+                    def __init__(self, cached_data: dict, text: str):
                         self.text = text
-                        self.candidates = [type("Candidate", (), {"text": text})()]
-                        self.usage_metadata = type("Usage", (), {"prompt_token_count": 0, "candidates_token_count": 0})()
+                        self._data = cached_data or {}
+                        
+                        # Reconstruct candidates
+                        self.candidates = []
+                        for cand_data in self._data.get("candidates", [{"content": {"parts": [{"text": text}]}}]):
+                            cand = type("Candidate", (), {})()
+                            content = type("Content", (), {})()
+                            parts = []
+                            for part_data in cand_data.get("content", {}).get("parts", [{"text": text}]):
+                                parts.append(type("Part", (), {"text": part_data.get("text", "")})())
+                            content.parts = parts
+                            cand.content = content
+                            cand.text = parts[0].text if parts else ""
+                            cand.finish_reason = cand_data.get("finish_reason", "STOP")
+                            self.candidates.append(cand)
+                            
+                        # Reconstruct usage_metadata
+                        usage_data = self._data.get("usage_metadata", {})
+                        self.usage_metadata = type("Usage", (), {
+                            "prompt_token_count": usage_data.get("prompt_token_count", 0),
+                            "candidates_token_count": usage_data.get("candidates_token_count", 0),
+                            "total_token_count": usage_data.get("total_token_count", 0)
+                        })()
+                        
+                    def to_dict(self):
+                        return self._data
+
                     def __getattr__(self, name):
                         return None
-                response = CachedResponse(cache_result.get("cached_text", "[ThriftLLM Cached Response]"))
+                        
+                response = CachedResponse(cache_result.get("response"), cache_result.get("cached_text", "[ThriftLLM Cached Response]"))
                 latency = time.time() - start_time
                 self.thrift.metrics.record_call(
                     model=current_model_name, input_tokens=0, output_tokens=0,
