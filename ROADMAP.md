@@ -36,7 +36,8 @@
 - **August 15**: **Implemented Cache Invalidation Strategy**. Addressed an open question by adding an `invalidate` method to `CacheManager` in `src/thriftllm/cache.py`. Exposed `invalidate_cache` in both `ThriftVertex` (`src/thriftllm/core.py`) and `ClaudeVertex` (`src/thriftllm/providers/claude.py`). This allows developers to programmatically delete cached responses (e.g., when a user gives a thumbs-down to a bad response). Updated ROADMAP.
 - **August 16**: **Updated Pricing Estimator**. Resolved an open question by updating `src/thriftllm/metrics.py` to use exact 2026 pricing tables for Gemini 1.5 (Flash/Pro) and Claude 3/3.5 models, replacing the previous placeholder logic. Updated ROADMAP.
 - **August 17**: **Implemented GenerationResponse Serialization**. Resolved an open question by updating `src/thriftllm/cache.py` to properly serialize the full `GenerationResponse` object (including candidates, parts, and usage metadata) and updating `src/thriftllm/core.py` to reconstruct a robust mock `GenerationResponse` upon cache hits. This ensures downstream applications receive a consistent object structure regardless of whether the response was generated or cached. Updated ROADMAP.
-- **August 18 (this session)**: **Implemented Automatic Cache Warming**. Created `src/thriftllm/warmer.py` with `CacheWarmer` to proactively warm the cache with documents retrieved from Orion's deep research RAG process. Exposed `CacheWarmer` in `src/thriftllm/__init__.py`. This allows subsequent generation requests to benefit from reduced latency and cost. Updated ROADMAP.
+- **August 18**: **Implemented Automatic Cache Warming**. Created `src/thriftllm/warmer.py` with `CacheWarmer` to proactively warm the cache with documents retrieved from Orion's deep research RAG process. Exposed `CacheWarmer` in `src/thriftllm/__init__.py`. This allows subsequent generation requests to benefit from reduced latency and cost. Updated ROADMAP.
+- **August 19 (this session)**: **Implemented Preference Data Collection**. Created `src/thriftllm/feedback.py` with `FeedbackCollector` to log user ratings and corrections for generated responses. Exposed `FeedbackCollector` in `src/thriftllm/__init__.py`. This data will be used to fine-tune the `AdaptiveRouter` and monitor model quality in production. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
@@ -50,7 +51,6 @@
 - Quality measurement frameworks.
 
 **Ideas for Future Improvements**:
-- Preference data collection for router training.
 - Auto A/B testing of configs.
 - Support for batch + multimodal optimization.
 
@@ -61,4 +61,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 18, 2026 by Gilfoyle. Implemented Automatic Cache Warming.*
+*Last Updated: August 19, 2026 by Gilfoyle. Implemented Preference Data Collection.*
