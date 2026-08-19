@@ -15,9 +15,10 @@ from .metrics import MetricsCollector
 from .adapter import OrionAdapter, thrift_route
 from .providers.claude import ClaudeVertex
 from .warmer import CacheWarmer
+from .feedback import FeedbackCollector
 
 __version__ = "0.1.0"
-__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer"]
+__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector"]
 
 # TODO: Implement individual optimization layers in subsequent modules
 # - cache/: Hybrid semantic + Vertex Context Cache + Redis (Implemented)
