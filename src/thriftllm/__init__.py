@@ -16,9 +16,10 @@ from .adapter import OrionAdapter, thrift_route
 from .providers.claude import ClaudeVertex
 from .warmer import CacheWarmer
 from .feedback import FeedbackCollector
+from .ab_testing import ABTestManager
 
 __version__ = "0.1.0"
-__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector"]
+__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector", "ABTestManager"]
 
 # TODO: Implement individual optimization layers in subsequent modules
 # - cache/: Hybrid semantic + Vertex Context Cache + Redis (Implemented)
