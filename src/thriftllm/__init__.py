@@ -17,9 +17,11 @@ from .providers.claude import ClaudeVertex
 from .warmer import CacheWarmer
 from .feedback import FeedbackCollector
 from .ab_testing import ABTestManager
+from .batch import BatchOptimizer
+from .multimodal import MultimodalOptimizer
 
 __version__ = "0.1.0"
-__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector", "ABTestManager"]
+__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector", "ABTestManager", "BatchOptimizer", "MultimodalOptimizer"]
 
 # TODO: Implement individual optimization layers in subsequent modules
 # - cache/: Hybrid semantic + Vertex Context Cache + Redis (Implemented)
