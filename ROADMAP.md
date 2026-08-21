@@ -38,7 +38,8 @@
 - **August 17**: **Implemented GenerationResponse Serialization**. Resolved an open question by updating `src/thriftllm/cache.py` to properly serialize the full `GenerationResponse` object (including candidates, parts, and usage metadata) and updating `src/thriftllm/core.py` to reconstruct a robust mock `GenerationResponse` upon cache hits. This ensures downstream applications receive a consistent object structure regardless of whether the response was generated or cached. Updated ROADMAP.
 - **August 18**: **Implemented Automatic Cache Warming**. Created `src/thriftllm/warmer.py` with `CacheWarmer` to proactively warm the cache with documents retrieved from Orion's deep research RAG process. Exposed `CacheWarmer` in `src/thriftllm/__init__.py`. This allows subsequent generation requests to benefit from reduced latency and cost. Updated ROADMAP.
 - **August 19**: **Implemented Preference Data Collection**. Created `src/thriftllm/feedback.py` with `FeedbackCollector` to log user ratings and corrections for generated responses. Exposed `FeedbackCollector` in `src/thriftllm/__init__.py`. This data will be used to fine-tune the `AdaptiveRouter` and monitor model quality in production. Updated ROADMAP.
-- **August 20 (this session)**: **Implemented Auto A/B Testing of Configs**. Created `src/thriftllm/ab_testing.py` with `ABTestManager` to route traffic between different configurations and track metrics. Exposed `ABTestManager` in `src/thriftllm/__init__.py`. This allows empirical validation of optimization strategies in production. Updated ROADMAP.
+- **August 20**: **Implemented Auto A/B Testing of Configs**. Created `src/thriftllm/ab_testing.py` with `ABTestManager` to route traffic between different configurations and track metrics. Exposed `ABTestManager` in `src/thriftllm/__init__.py`. This allows empirical validation of optimization strategies in production. Updated ROADMAP.
+- **August 21 (this session)**: **Implemented Batch and Multimodal Optimization**. Created `src/thriftllm/batch.py` with `BatchOptimizer` for concurrent request handling and `src/thriftllm/multimodal.py` with `MultimodalOptimizer` for media asset optimization. Exposed both in `src/thriftllm/__init__.py`. This addresses the future improvement idea for batch and multimodal support. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
@@ -52,7 +53,6 @@
 - Quality measurement frameworks.
 
 **Ideas for Future Improvements**:
-- Support for batch + multimodal optimization.
 
 **Technical Debt**: None. Code is readable, observable (print + metrics), extensible, with clear TODOs. Stubs explicit. Documentation synchronized. Tests added for core components.
 
@@ -61,4 +61,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 20, 2026 by Gilfoyle. Implemented Auto A/B Testing of Configs.*
+*Last Updated: August 21, 2026 by Gilfoyle. Implemented Batch and Multimodal Optimization.*
