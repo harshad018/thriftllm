@@ -39,10 +39,12 @@
 - **August 18**: **Implemented Automatic Cache Warming**. Created `src/thriftllm/warmer.py` with `CacheWarmer` to proactively warm the cache with documents retrieved from Orion's deep research RAG process. Exposed `CacheWarmer` in `src/thriftllm/__init__.py`. This allows subsequent generation requests to benefit from reduced latency and cost. Updated ROADMAP.
 - **August 19**: **Implemented Preference Data Collection**. Created `src/thriftllm/feedback.py` with `FeedbackCollector` to log user ratings and corrections for generated responses. Exposed `FeedbackCollector` in `src/thriftllm/__init__.py`. This data will be used to fine-tune the `AdaptiveRouter` and monitor model quality in production. Updated ROADMAP.
 - **August 20**: **Implemented Auto A/B Testing of Configs**. Created `src/thriftllm/ab_testing.py` with `ABTestManager` to route traffic between different configurations and track metrics. Exposed `ABTestManager` in `src/thriftllm/__init__.py`. This allows empirical validation of optimization strategies in production. Updated ROADMAP.
-- **August 21 (this session)**: **Implemented Batch and Multimodal Optimization**. Created `src/thriftllm/batch.py` with `BatchOptimizer` for concurrent request handling and `src/thriftllm/multimodal.py` with `MultimodalOptimizer` for media asset optimization. Exposed both in `src/thriftllm/__init__.py`. This addresses the future improvement idea for batch and multimodal support. Updated ROADMAP.
+- **August 21**: **Implemented Batch and Multimodal Optimization**. Created `src/thriftllm/batch.py` with `BatchOptimizer` for concurrent request handling and `src/thriftllm/multimodal.py` with `MultimodalOptimizer` for media asset optimization. Exposed both in `src/thriftllm/__init__.py`. This addresses the future improvement idea for batch and multimodal support. Updated ROADMAP.
+- **August 22 (this session)**: **Implemented Quality Measurement Framework**. Created `src/thriftllm/quality.py` with `QualityEvaluator` to evaluate the quality of generated responses using heuristics and optional LLM-as-a-judge. Exposed `QualityEvaluator` in `src/thriftllm/__init__.py`. This addresses the research backlog item for quality measurement frameworks. Updated ROADMAP.
 
 **Tasks In Progress**:
 - Community adoption and feedback gathering (M5).
+- Semantic cache hit-rate tuning in real traffic.
 
 **Pending Tasks**:
 - Maintainer to execute `scripts/publish_to_pypi.sh` with PyPI credentials to release v0.1.0.
@@ -50,7 +52,6 @@
 **Research Backlog** (updated from latest read_url on official docs):
 - Vertex 2026 Context Caching: Implicit (default, 90% discount, prefix-based) + Explicit (control, 75-90% on Gemini 2.x/3.x, storage costs, min 2k-4k tokens). Best for large static context (docs, videos, system instr, RAG). For multi-turn: cache base context + append dynamic turns. Limits documented in ARCHITECTURE.
 - Semantic cache hit-rate tuning in real traffic.
-- Quality measurement frameworks.
 
 **Ideas for Future Improvements**:
 
@@ -61,4 +62,4 @@
 
 **Mandatory Note**: This file MUST be read at the start of every development session and updated before ending it. Documentation must stay in sync with implementation at all times.
 
-*Last Updated: August 21, 2026 by Gilfoyle. Implemented Batch and Multimodal Optimization.*
+*Last Updated: August 22, 2026 by Gilfoyle. Implemented Quality Measurement Framework.*
