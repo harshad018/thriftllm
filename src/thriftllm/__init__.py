@@ -19,14 +19,15 @@ from .feedback import FeedbackCollector
 from .ab_testing import ABTestManager
 from .batch import BatchOptimizer
 from .multimodal import MultimodalOptimizer
+from .quality import QualityEvaluator
 
 __version__ = "0.1.0"
-__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector", "ABTestManager", "BatchOptimizer", "MultimodalOptimizer"]
+__all__ = ["ThriftVertex", "OptimizationConfig", "MetricsCollector", "OrionAdapter", "thrift_route", "ClaudeVertex", "CacheWarmer", "FeedbackCollector", "ABTestManager", "BatchOptimizer", "MultimodalOptimizer", "QualityEvaluator"]
 
 # TODO: Implement individual optimization layers in subsequent modules
 # - cache/: Hybrid semantic + Vertex Context Cache + Redis (Implemented)
 # - compression/: LLMLingua + custom for RAG/tools (Implemented)
 # - routing/: Adaptive model selection (Flash vs Pro) (Implemented)
 # - summarization/: Rolling conversation state management (Implemented)
-# - quality/: LLM-as-judge and embedding similarity guards
+# - quality/: LLM-as-judge and embedding similarity guards (Implemented)
 # - integration/: Flask middleware, session awareness with Redis/Supabase (Implemented)
